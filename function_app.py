@@ -1,25 +1,20 @@
 import azure.functions as func
 import logging
+import obtain_secret
 
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+app = func.FunctionApp()
+@app.function_name(name="ShowSecret")
+@app.route(route="show-secret", auth_level=func.AuthLevel.ANONYMOUS)
+def test_function(req: func.HttpRequest) -> func.HttpResponse:
+    
+    secret = obtain_secret.get_secret_value()
+    code = 200
 
-@app.route(route="get_sysadmins_secret")
-def get_sysadmins_secret(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+    # detect errors
+    if secret[0] != None:
+        code = 401
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
-
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-    else:
-        return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
-        )
+    response = func.HttpResponse(str(secret[1]), status_code=code)
+    logging.info(f"Processed request. Status: {code}")
+    
+    return response
