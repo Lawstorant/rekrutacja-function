@@ -12,7 +12,7 @@ def getsecret(req: func.HttpRequest) -> func.HttpResponse:
         
     res_body = "Application version: "
     with open('application.version', 'r') as file:
-        res_body += file.read()
+        res_body += file.readline()
         
     res_body += "<br><br>"
     
