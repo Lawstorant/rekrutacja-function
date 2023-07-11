@@ -2,11 +2,11 @@ import azure.functions as func
 import logging
 import obtain_secret
 
-app = func.FunctionApp()
+app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
-@app.function_name(name="showsecret")
-@app.route(route="showsecret", auth_level=func.AuthLevel.ANONYMOUS)
-def showsecret(req: func.HttpRequest) -> func.HttpResponse:
+@app.function_name(name="showSecret")
+@app.route(route="showSecret")
+def showSecret(req: func.HttpRequest) -> func.HttpResponse:
     secret = obtain_secret.get_secret_value()
     code = 200
         

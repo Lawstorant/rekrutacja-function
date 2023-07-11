@@ -10,12 +10,13 @@ def get_secret_value() -> tuple:
     key_vault_name = os.environ["KEY_VAULT_NAME"]
     environment    = os.environ["APPLICATION_ENVIRONMENT"]
     secret_name    = os.environ["SECRET_NAME"]
+    identity       = os.environ["AZURE_CLIENT_ID"]
     
     # generate key vault URL
     url = f"https://{key_vault_name}-{environment}.vault.azure.net"
 
     # get application credential
-    credential = DefaultAzureCredential()
+    credential = DefaultAzureCredential(managed_identity_client_id=identity)
 
     client = SecretClient(vault_url=url, credential=credential)
 
