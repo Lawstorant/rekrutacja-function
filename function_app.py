@@ -4,9 +4,9 @@ import obtain_secret
 
 app = func.FunctionApp()
 
-@app.function_name(name="getsecret")
-@app.route(route="getsecret", auth_level=func.AuthLevel.ANONYMOUS)
-def getsecret(req: func.HttpRequest) -> func.HttpResponse:
+@app.function_name(name="showsecret")
+@app.route(route="showsecret", auth_level=func.AuthLevel.ANONYMOUS)
+def showsecret(req: func.HttpRequest) -> func.HttpResponse:
     secret = obtain_secret.get_secret_value()
     code = 200
         
